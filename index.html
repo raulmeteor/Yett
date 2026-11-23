@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yett — A Personal Note</title>
+  <style>
+    :root {
+      --ink: #202923;
+      --muted: #687269;
+      --paper: #f4f1e9;
+      --white: #fbfaf6;
+      --sage: #738b7b;
+      --sage-dark: #53685a;
+      --line: #d9ddd5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image: radial-gradient(circle, var(--sage) 0.7px, transparent 1px);
+      background-size: 26px 26px;
+    }
+
+    .heart-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating-heart {
+      position: absolute;
+      bottom: -40px;
+      color: rgba(115, 139, 123, .24);
+      animation: floatUp linear infinite;
+      font-family: Arial, sans-serif;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0) rotate(-10deg); opacity: 0; }
+      12% { opacity: 1; }
+      to { transform: translateY(-110vh) rotate(16deg); opacity: 0; }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 48px 20px;
+    }
+
+    .card {
+      width: min(760px, 100%);
+      text-align: center;
+      padding: clamp(42px, 8vw, 82px) clamp(24px, 7vw, 74px);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--white);
+      box-shadow: 0 22px 60px rgba(55, 65, 58, .08);
+      text-align: left;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--sage-dark);
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(64px, 11vw, 104px);
+      line-height: .9;
+      letter-spacing: -.06em;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .script {
+      display: block;
+      margin-top: 18px;
+      color: var(--sage);
+      font-size: clamp(24px, 5vw, 42px);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -.02em;
+    }
+
+    .message {
+      max-width: 530px;
+      margin: 34px 0 30px;
+      font-size: clamp(17px, 2.7vw, 21px);
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .love-meter {
+      width: min(430px, 100%);
+      margin: 0 0 30px;
+      text-align: left;
+    }
+
+    .love-list {
+      margin: 28px 0 34px;
+      padding: 0;
+      list-style: none;
+      counter-reset: love;
+    }
+
+    .love-list li {
+      counter-increment: love;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: start;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+      font-size: clamp(16px, 2.5vw, 19px);
+      line-height: 1.45;
+    }
+
+    .love-list li::before {
+      content: counter(love, decimal-leading-zero);
+      color: var(--sage);
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      padding-top: 5px;
+    }
+
+    .meter-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 9px;
+      color: var(--muted);
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .track {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7e7df;
+    }
+
+    .fill {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--sage);
+      transform-origin: left;
+      animation: fillMeter 1.8s cubic-bezier(.2,.75,.25,1) both;
+    }
+
+    @keyframes fillMeter {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    button {
+      border: 0;
+      border-radius: 2px;
+      padding: 15px 24px;
+      font-family: "Trebuchet MS", sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      color: var(--white);
+      background: var(--sage-dark);
+      box-shadow: 0 8px 20px rgba(83, 104, 90, .16);
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      background: white;
+      box-shadow: 0 12px 24px rgba(83, 104, 90, .22);
+    }
+
+    button:active { transform: translateY(-1px) scale(.98); }
+
+    .reveal {
+      max-height: 0;
+      overflow: hidden;
+      margin: 0;
+      opacity: 0;
+      transition: max-height .7s ease, opacity .5s ease, margin .5s ease;
+      color: var(--sage-dark);
+      font-size: clamp(20px, 4vw, 28px);
+      font-style: italic;
+    }
+
+    .reveal.visible {
+      max-height: 180px;
+      margin-top: 24px;
+      opacity: 1;
+    }
+
+    .burst {
+      position: fixed;
+      z-index: 5;
+      pointer-events: none;
+      font-family: Arial, sans-serif;
+      animation: burst .9s ease-out forwards;
+    }
+
+    @keyframes burst {
+      from { transform: translate(-50%, -50%) scale(.6); opacity: 1; }
+      to { transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(25deg); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 18px 12px; }
+      .card { border-radius: 3px; }
+      .message { line-height: 1.55; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-heart, .fill { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="heart-field" id="heartField" aria-hidden="true"></div>
+
+  <main>
+    <section class="card" aria-label="A love letter for Yett">
+      <p class="eyebrow">Para el amor de mi vida</p>
+      <h1>Yett<span class="script">This is for you.</span></h1>
+
+      <p class="message">
+        Tu eres el amor de mi vida, Mi Bonita Te Amo Con Todo Mi Corazón, Eres La Persona 
+        Más Especial Para Mí, Y No Puedo Imaginar Mi Vida Sin Ti.
+        te amo mi bonita Gracias por estar en mi vida
+        y hacer todos los dias de mi v ida mas bonitos 
+        eres el amor de mi vida y no puedo esperar a pasar el resto de mi vida contigo
+        le doy gracias a dios por darme la oportunidad de tenerte conocerte y amarte, 
+        eres lo mejor que me ha pasado en la vida
+        te amo
+      </p>
+
+      <ol class="love-list" aria-label="Diez cosas que amo de ti">
+        <li>Amo lo graciosa que eres.</li>
+        <li>Amo tu fortaleza.</li>
+        <li>Amo que eres una persona tan atenta.</li>
+        <li>Amo lo fuerte que eres.</li>
+        <li>Amo tu humildad.</li>
+        <li>Amo tu gran corazón.</li>
+        <li>Amo tu manera de ser.</li>
+        <li>Amo hablar contigo.</li>
+        <li>Amo tu honestidad.</li>
+        <li>Amo que eres mi lugar seguro.</li>
+      </ol>
+
+      <div class="love-meter" aria-label="Love level: beyond measure">
+        <div class="meter-label">
+          <span>My love for you</span>
+          <span>Beyond measure</span>
+        </div>
+        <div class="track"><div class="fill"></div></div>
+      </div>
+
+      <button id="loveButton" type="button">Open my message</button>
+      <p class="reveal" id="reveal">Today, tomorrow, and always — I choose you.</p>
+    </section>
+  </main>
+
+  <script>
+    const heartField = document.getElementById("heartField");
+    for (let i = 0; i < 14; i++) {
+      const heart = document.createElement("span");
+      heart.className = "floating-heart";
+      heart.textContent = i % 3 === 0 ? "♡" : "♥";
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.fontSize = `${12 + Math.random() * 20}px`;
+      heart.style.animationDuration = `${9 + Math.random() * 12}s`;
+      heart.style.animationDelay = `${Math.random() * -20}s`;
+      heartField.appendChild(heart);
+    }
+
+    const button = document.getElementById("loveButton");
+    const reveal = document.getElementById("reveal");
+
+    button.addEventListener("click", (event) => {
+      reveal.classList.toggle("visible");
+      button.textContent = reveal.classList.contains("visible")
+        ? "Close message"
+        : "Open my message";
+
+      const rect = event.currentTarget.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 18; i++) {
+        const heart = document.createElement("span");
+        heart.className = "burst";
+        heart.textContent = i % 4 === 0 ? "♡" : "♥";
+        heart.style.left = `${centerX}px`;
+        heart.style.top = `${centerY}px`;
+        heart.style.fontSize = `${14 + Math.random() * 14}px`;
+        heart.style.color = i % 2 ? "#738b7b" : "#53685a";
+        heart.style.setProperty("--tx", `${(Math.random() - .5) * 220}px`);
+        heart.style.setProperty("--ty", `${-40 - Math.random() * 170}px`);
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 900);
+      }
+    });
+  </script>
+</body>
+</html>
